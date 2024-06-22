@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from 'src/database/database.service';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class UserService {
@@ -8,7 +8,7 @@ export class UserService {
   async getOrderHistory(userId: number) {
     const user = await this.prisma.user.findUnique({
       where: { userId },
-      include: { orders: true }, // Include related orders
+      include: { orders: true },
     });
 
     if (!user) {

@@ -38,7 +38,7 @@ export class CartController {
   }
 
   @ApiOperation({ summary: 'Updates the quantity of a product in the cart.' })
-  @ApiBody({ type: CartDto }) // Replace with your DTO type
+  @ApiBody({ type: CartDto })
   @Put('update')
   async updateCart(@Body() updateCartDto: CartDto) {
     return this.cartService.updateCartItem(updateCartDto);

@@ -1,0 +1,331 @@
+openapi: 3.0.0
+info:
+  title: Order Management System Documentation
+  description: Documentation for NestJS APIs of OMS using Swagger with Prisma schema integration
+  version: 1.0.0
+paths:
+  /cart/add:
+    post:
+      tags:
+        - Cart
+      summary: Adds a product to the user's cart or updates the quantity if the product is already in the cart.
+      operationId: addToCart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                productId:
+                  type: integer
+                quantity:
+                  type: integer
+              required:
+              - userId
+              - productId
+              - quantity
+      responses:
+        '200':
+          description: Successfully added to cart
+  /cart/{userId}:
+    get:
+      tags:
+        - Cart
+      summary: Retrieves the user's cart.
+      operationId: viewCart
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved cart details
+  /cart/update:
+    put:
+      tags:
+        - Cart
+      summary: Updates the quantity of a product in the cart.
+      operationId: updateCart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                productId:
+                  type: integer
+                quantity:
+                  type: integer
+              required:
+              - userId
+              - productId
+              - quantity
+      responses:
+        '200':
+          description: Successfully updated cart
+  /cart/remove:
+    delete:
+      tags:
+        - Cart
+      summary: Removes a product from the cart.
+      operationId: removeFromCart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                productId:
+                  type: integer
+              required:
+              - userId
+              - productId
+      responses:
+        '200':
+          description: Successfully removed from cart
+  /orders:
+    post:
+      tags:
+        - Orders
+      summary: Creates a new order for the specified user with the products in their cart.
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+              required:
+              - userId
+      responses:
+        '200':
+          description: Successfully created order
+  /orders/{orderId}:
+    get:
+      tags:
+        - Orders
+      summary: Retrieves the order details by order ID.
+      operationId: getOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved order details
+  /orders/{orderId}/status:
+    put:
+      tags:
+        - Orders
+      summary: Updates the status of an order.
+      operationId: updateOrderStatus
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+              required:
+              - status
+      responses:
+        '200':
+          description: Successfully updated order status
+  /orders/apply-coupon:
+    post:
+      tags:
+        - Orders
+      summary: Applies a coupon or discount code to an order.
+      operationId: applyCoupon
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: integer
+                couponCode:
+                  type: string
+              required:
+              - orderId
+              - couponCode
+      responses:
+        '200':
+          description: Successfully applied coupon
+  /users/{userId}/orders:
+    get:
+      tags:
+        - Users
+      summary: Retrieves order history for a user.
+      operationId: getOrderHistory
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved order history
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+        description:
+          type: string
+        cart:
+          $ref: '#/components/schemas/Cart'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    
+    Product:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        stock:
+          type: integer
+        cartItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+        orderDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        total:
+          type: number
+          format: float
+        user:
+          $ref: '#/components/schemas/User'
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+
+    Cart:
+      type: object
+      properties:
+        cartId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        user:
+          $ref: '#/components/schemas/User'
+        cartItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+
+    CartItem:
+      type: object
+      properties:
+        cartItemId:
+          type: integer
+          format: int64
+        cartId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+        price:
+          type: number
+          format: float
+        cart:
+          $ref: '#/components/schemas/Cart'
+        product:
+          $ref: '#/components/schemas/Product'
+
+    OrderItem:
+      type: object
+      properties:
+        orderItemId:
+          type: integer
+          format: int64
+        orderId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+        price:
+          type: number
+          format: float
+        order:
+          $ref: '#/components/schemas/Order'
+        product:
+          $ref: '#/components/schemas/Product'

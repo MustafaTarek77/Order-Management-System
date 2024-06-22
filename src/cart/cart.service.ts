@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from 'src/database/database.service';
+import { DatabaseService } from '../database/database.service';
 import { CartDto } from './dto/add-update-cart.dto';
 import { RemoveFromCartDto } from './dto/remove-from-cart.dto';
 
@@ -16,7 +16,7 @@ export class CartService {
       include: { cartItems: true },
     });
 
-    let product = await this.prisma.product.findUnique({
+    const product = await this.prisma.product.findUnique({
       where: { productId },
     });
 
@@ -83,12 +83,12 @@ export class CartService {
     const { userId, productId, quantity } = updateCartDto;
 
     // Check if the user already has a cart
-    let cart = await this.prisma.cart.findUnique({
+    const cart = await this.prisma.cart.findUnique({
       where: { userId },
       include: { cartItems: true },
     });
 
-    let product = await this.prisma.product.findUnique({
+    const product = await this.prisma.product.findUnique({
       where: { productId },
     });
 
@@ -128,7 +128,7 @@ export class CartService {
     const { userId, productId } = removeFromCartDto;
 
     // Check if the user already has a cart
-    let cart = await this.prisma.cart.findUnique({
+    const cart = await this.prisma.cart.findUnique({
       where: { userId },
       include: { cartItems: true },
     });

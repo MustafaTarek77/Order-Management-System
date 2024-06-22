@@ -3,7 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { DatabaseService } from 'src/database/database.service';
+import { DatabaseService } from '../database/database.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ApplyCouponDto } from './dto/apply-coupon.dto';
 
