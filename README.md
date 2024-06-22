@@ -139,7 +139,7 @@ To implement this schema in your development environment:
   - **Functionality:** Applying discounts and coupons to orders.
 
 ### Getting Started:
-1.**Open API & schema documentation**
+1. **Open API & schema documentation**
   - Open swagger editor(https://editor.swagger.io/) and copy the yaml file that exists in the project files to the editor.
 2. **Clone the repository:**
    ```bash
