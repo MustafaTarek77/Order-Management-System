@@ -157,12 +157,16 @@ To implement this schema in your development environment:
    npx prisma migrate dev
    npx prisma generate
    ```
-6. **Run the application:**
+6. **Generate seed data:**
+   ```bash
+   npm run seed
+   ```
+7. **Run the application:**
    ```bash
    # watch mode
    $ npm run start:dev
    ```
-7. **Testing:**
+8. **Testing:**
    ```bash
    # unit tests
    $ npm run test
@@ -173,3 +177,7 @@ To implement this schema in your development environment:
 - Ensure PostgreSQL is running and accessible.
 - Modify the Prisma schema (`schema.prisma`) as needed and run `npx prisma migrate dev` to apply migrations.
 - Customize NestJS controllers and services (`src/` folder) to fit additional business logic requirements.
+
+### Explanation Video Link:
+
+-https://drive.google.com/drive/folders/1jI_8PKjIeWejTNbB-VhQaPQmX_6aPbd5?usp=sharing
