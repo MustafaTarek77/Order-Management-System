@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { ApplyCouponDto } from './dto/apply-coupon.dto';
 
 @Injectable()
 export class OrderService {
@@ -16,21 +21,29 @@ export class OrderService {
     });
 
     if (!cart || cart.cartItems.length === 0) {
-      throw new Error(`Cart is empty for userId: ${userId}`);
+      throw new NotFoundException(`Cart is empty for userId: ${userId}`);
     }
 
-    // Create a new order
+    const orderItems = cart.cartItems.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      price: item.price * item.quantity,
+    }));
+
+    // Calculate total order price
+    const totalPrice = orderItems.reduce((accumulator, currentItem) => {
+      return accumulator + currentItem.price;
+    }, 0);
+
+    // Create the order with calculated total
     const order = await this.prisma.order.create({
       data: {
         userId,
         orderDate: new Date(),
-        status: 'PENDING', // Adjust the status as needed
+        status: 'PENDING',
+        total: totalPrice,
         orderItems: {
-          create: cart.cartItems.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.price * item.quantity,
-          })),
+          create: orderItems,
         },
       },
       include: {
@@ -55,10 +68,15 @@ export class OrderService {
   }
 
   async getOrder(orderId: number) {
-    return this.prisma.order.findUnique({
+    const order = await this.prisma.order.findUnique({
       where: { orderId },
       include: { orderItems: true },
     });
+    if (!order) {
+      throw new NotFoundException(`There is no order with this id`);
+    }
+
+    return order;
   }
 
   async updateOrderStatus(orderId: number, status: string) {
@@ -75,6 +93,35 @@ export class OrderService {
     return this.prisma.order.update({
       where: { orderId },
       data: { status },
+    });
+  }
+
+  async applyCoupon(applyCouponDto: ApplyCouponDto) {
+    const { orderId, couponCode } = applyCouponDto;
+
+    // Find the order by orderId
+    const order = await this.prisma.order.findUnique({
+      where: { orderId },
+    });
+
+    if (!order) {
+      throw new BadRequestException(`Order with ID ${orderId} not found`);
+    }
+
+    // Check if coupon code is valid and applicable
+    if (couponCode !== 'SUMMER2024') {
+      throw new BadRequestException('Invalid coupon code');
+    }
+
+    // Apply discount logic
+    const discountedTotal = order.total * 0.9; // 10% discount
+
+    // Update order with discounted total and coupon code applied
+    return this.prisma.order.update({
+      where: { orderId },
+      data: {
+        total: discountedTotal,
+      },
     });
   }
 }

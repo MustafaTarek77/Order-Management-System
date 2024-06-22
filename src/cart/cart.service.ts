@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CartDto } from './dto/add-update-cart.dto';
 import { RemoveFromCartDto } from './dto/remove-from-cart.dto';
@@ -21,7 +21,7 @@ export class CartService {
     });
 
     if (quantity > product.stock) {
-      throw new Error(`Not enough resources`);
+      throw new NotFoundException(`Not enough resources`);
     }
 
     if (!cart) {
@@ -93,11 +93,11 @@ export class CartService {
     });
 
     if (!cart) {
-      throw new Error(`Cart not found for userId: ${userId}`);
+      throw new NotFoundException(`Cart not found for userId: ${userId}`);
     }
 
     if (quantity > product.stock) {
-      throw new Error(`Not enough resources`);
+      throw new NotFoundException(`Not enough resources`);
     }
 
     // Find the cart item to update
@@ -106,7 +106,9 @@ export class CartService {
     );
 
     if (!cartItem) {
-      throw new Error(`Product with ID ${productId} not found in the cart`);
+      throw new NotFoundException(
+        `Product with ID ${productId} not found in the cart`,
+      );
     }
 
     // Update the quantity of the cart item
@@ -132,7 +134,7 @@ export class CartService {
     });
 
     if (!cart) {
-      throw new Error(`Cart not found for userId: ${userId}`);
+      throw new NotFoundException(`Cart not found for userId: ${userId}`);
     }
 
     // Find the cart item to remove
@@ -141,7 +143,9 @@ export class CartService {
     );
 
     if (!cartItem) {
-      throw new Error(`Product with ID ${productId} not found in the cart`);
+      throw new NotFoundException(
+        `Product with ID ${productId} not found in the cart`,
+      );
     }
 
     // Remove the cart item

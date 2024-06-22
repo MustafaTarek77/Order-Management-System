@@ -41,6 +41,7 @@ model Order {
   orderDate   DateTime @default(now())
   status      String
   userId      Int
+  total       Float    @default(0)
   user        User    @relation(fields: [userId], references: [userId])
   orderItems  OrderItem[]
   @@index([orderId])
