@@ -141,28 +141,28 @@ To implement this schema in your development environment:
 ### Getting Started:
 1.**Open API & schema documentation**
   - Open swagger editor(https://editor.swagger.io/) and copy the yaml file that exists in the project files to the editor.
-1. **Clone the repository:**
+2. **Clone the repository:**
    ```bash
    git clone <repository-url>
    cd <project-folder>
    ```
-2. **Install dependencies:**
+3. **Install dependencies:**
    ```bash
    npm install
    ```
-3. **Set up environment variables:**
+4. **Set up environment variables:**
    - Create a `.env` file based on `.env.example` and configure your PostgreSQL database URL.
-4. **Migrate the database and generate it:**
+5. **Migrate the database and generate it:**
    ```bash
    npx prisma migrate dev
    npx prisma generate
    ```
-5. **Run the application:**
+6. **Run the application:**
    ```bash
    # watch mode
    $ npm run start:dev
    ```
-6. **Testing:**
+7. **Testing:**
    ```bash
    # unit tests
    $ npm run test
