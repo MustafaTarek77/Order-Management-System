@@ -139,42 +139,33 @@ To implement this schema in your development environment:
   - **Functionality:** Applying discounts and coupons to orders.
 
 ### Getting Started:
-
-1. **Clone the repository:**
+1. **Open API & schema documentation**
+   - Open swagger editor(https://editor.swagger.io/) and copy the yaml file that exists in the project files to the editor.
+2. **Clone the repository:**
    ```bash
    git clone <repository-url>
    cd <project-folder>
    ```
-2. **Install dependencies:**
+3. **Install dependencies:**
    ```bash
    npm install
    ```
-3. **Set up environment variables:**
+4. **Set up environment variables:**
    - Create a `.env` file based on `.env.example` and configure your PostgreSQL database URL.
-4. **Run the application:**
-
+5. **Migrate the database and generate it:**
    ```bash
-   # development
-   $ npm run start
-
+   npx prisma migrate dev
+   npx prisma generate
+   ```
+6. **Run the application:**
+   ```bash
    # watch mode
    $ npm run start:dev
-
-   # production mode
-   $ npm run start:prod
    ```
-
-5. **Testing:**
-
+7. **Testing:**
    ```bash
    # unit tests
    $ npm run test
-
-   # e2e tests
-   $ npm run test:e2e
-
-   # test coverage
-   $ npm run test:cov
    ```
 
 ### Notes:
