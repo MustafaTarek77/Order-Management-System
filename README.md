@@ -140,7 +140,7 @@ To implement this schema in your development environment:
 
 ### Getting Started:
 1. **Open API & schema documentation**
-  - Open swagger editor(https://editor.swagger.io/) and copy the yaml file that exists in the project files to the editor.
+   - Open swagger editor(https://editor.swagger.io/) and copy the yaml file that exists in the project files to the editor.
 2. **Clone the repository:**
    ```bash
    git clone <repository-url>
