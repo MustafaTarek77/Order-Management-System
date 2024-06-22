@@ -8,10 +8,9 @@
 
 Design and implement an Order Management System (OMS) for an e-commerce mobile app.
 
-#### Requirements:
+#### Tools:
 
 - **Environment Setup:**
-  - Ensure you have a working environment with the necessary tools and technologies.
   - **Backend Framework:** NestJS
   - **ORM:** Prisma
   - **Database:** PostgreSQL
