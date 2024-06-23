@@ -153,8 +153,7 @@ To implement this schema in your development environment:
    - Create a `.env` file based on `.env.example` and configure your PostgreSQL database URL.
 5. **Migrate the database and generate it:**
    ```bash
-   npx prisma migrate dev
-   npx prisma generate
+   npx prisma migrate dev --name init
    ```
 6. **Generate seed data:**
    ```bash
