@@ -64,6 +64,10 @@ export class OrderService {
       where: { cartId: cart.cartId },
     });
 
+    await this.prisma.cart.delete({
+      where: { userId },
+    });
+
     return order;
   }
 

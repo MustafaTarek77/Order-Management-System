@@ -153,10 +153,21 @@ export class CartService {
       where: { cartItemId: cartItem.cartItemId },
     });
 
-    // Return the updated cart
-    return await this.prisma.cart.findUnique({
+    // Check if the cart is empty after removing the item
+    const updatedCart = await this.prisma.cart.findUnique({
       where: { userId },
       include: { cartItems: true },
     });
+
+    if (updatedCart.cartItems.length === 0) {
+      // Delete the cart if it has no items
+      await this.prisma.cart.delete({
+        where: { userId },
+      });
+      return { message: 'Cart is empty and has been deleted.' };
+    }
+
+    // Return the updated cart
+    return updatedCart;
   }
 }
