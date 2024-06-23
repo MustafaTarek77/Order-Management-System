@@ -20,7 +20,7 @@ export class CartService {
       where: { productId },
     });
 
-    if (quantity > product.stock) {
+    if (quantity > product.stock || quantity < 0) {
       throw new NotFoundException(`Not enough resources`);
     }
 
@@ -96,7 +96,7 @@ export class CartService {
       throw new NotFoundException(`Cart not found for userId: ${userId}`);
     }
 
-    if (quantity > product.stock) {
+    if (quantity > product.stock || quantity < 0) {
       throw new NotFoundException(`Not enough resources`);
     }
 

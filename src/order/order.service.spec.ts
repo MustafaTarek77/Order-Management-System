@@ -15,6 +15,7 @@ describe('OrderService', () => {
     };
     cart: {
       findUnique: jest.Mock;
+      delete: jest.Mock;
     };
     cartItem: {
       deleteMany: jest.Mock;
@@ -33,6 +34,7 @@ describe('OrderService', () => {
       },
       cart: {
         findUnique: jest.fn(),
+        delete: jest.fn(),
       },
       cartItem: {
         deleteMany: jest.fn(),
